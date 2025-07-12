@@ -6,6 +6,9 @@
 - **项目目标**: 开发一个功能完整、高性能的 New-API Go SDK，支持聊天、嵌入、图像、音频四大核心功能模块
 - **编码规范**: 请参考 [docs/coding_standards.md](../../docs/coding_standards.md)
 - **new-api 文档**: 请参考 [docs/api/new-api.md](../../docs/api/new-api.md)
+- **测试使用的new-api**: 已经写入环境下变量 NEW_API 和 NEW_API_KEY，方便测试
+
+
 
 ## 状态定义
 - **Pending**: 待处理。所有前置依赖已完成，但任务尚未开始。
