@@ -9,13 +9,13 @@ import (
 
 func TestNewClient(t *testing.T) {
 	// 测试使用默认配置创建客户端
-	client, err := NewClient()
+	_, err := NewClient()
 	if err == nil {
 		t.Errorf("Expected error for missing API key, got nil")
 	}
 
 	// 测试使用API密钥创建客户端
-	client, err = NewClient(WithAPIKey("test-key"))
+	client, err := NewClient(WithAPIKey("test-key"))
 	if err != nil {
 		t.Errorf("NewClient() error = %v", err)
 	}
