@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -8,6 +9,8 @@ import (
 	"github.com/hewenyu/newapi-go/config"
 	"github.com/hewenyu/newapi-go/internal/transport"
 	"github.com/hewenyu/newapi-go/internal/utils"
+	"github.com/hewenyu/newapi-go/services/chat"
+	"github.com/hewenyu/newapi-go/types"
 )
 
 // Client 是SDK的核心客户端结构
@@ -20,6 +23,8 @@ type Client struct {
 	logger utils.Logger
 	// mu 用于保护客户端的并发安全
 	mu sync.RWMutex
+	// chatService 聊天服务
+	chatService *chat.ChatService
 }
 
 // NewClient 创建一个新的客户端实例
@@ -45,6 +50,9 @@ func NewClient(options ...ClientOption) (*Client, error) {
 		transport.WithTimeout(client.config.Timeout),
 		transport.WithMiddleware(transport.LoggingMiddleware),
 	)
+
+	// 初始化聊天服务
+	client.chatService = chat.NewChatService(client.transport, client.logger)
 
 	client.logger.Info("Client initialized successfully")
 
@@ -102,6 +110,9 @@ func (c *Client) UpdateConfig(cfg *config.Config) error {
 		)
 		return fmt.Errorf("failed to initialize transport with new config")
 	}
+
+	// 重新初始化聊天服务
+	c.chatService = chat.NewChatService(c.transport, c.logger)
 
 	c.logger.Info("Client configuration updated successfully")
 
@@ -184,6 +195,11 @@ func (c *Client) SetLogger(logger utils.Logger) {
 	defer c.mu.Unlock()
 
 	c.logger = logger
+
+	// 更新聊天服务的日志器
+	if c.chatService != nil {
+		c.chatService = chat.NewChatService(c.transport, c.logger)
+	}
 }
 
 // SetTimeout 设置超时时间
@@ -232,4 +248,170 @@ func (c *Client) String() string {
 
 	return fmt.Sprintf("NewAPIClient{BaseURL: %s, Debug: %t, Timeout: %v}",
 		c.config.BaseURL, c.config.Debug, c.config.Timeout)
+}
+
+// GetChatService 获取聊天服务
+func (c *Client) GetChatService() *chat.ChatService {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	return c.chatService
+}
+
+// ========== 聊天服务代理方法 ==========
+
+// CreateChatCompletion 创建聊天完成
+func (c *Client) CreateChatCompletion(ctx context.Context, messages []types.ChatMessage, options ...chat.ChatOption) (*types.ChatCompletionResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.CreateChatCompletion(ctx, messages, options...)
+}
+
+// CreateChatCompletionStream 创建流式聊天完成
+func (c *Client) CreateChatCompletionStream(ctx context.Context, messages []types.ChatMessage, options ...chat.ChatOption) (types.StreamResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.CreateChatCompletionStream(ctx, messages, options...)
+}
+
+// SimpleChat 简单聊天
+func (c *Client) SimpleChat(ctx context.Context, message string, options ...chat.ChatOption) (*types.ChatCompletionResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.SimpleChat(ctx, message, options...)
+}
+
+// SimpleChatStream 简单流式聊天
+func (c *Client) SimpleChatStream(ctx context.Context, message string, options ...chat.ChatOption) (types.StreamResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.SimpleChatStream(ctx, message, options...)
+}
+
+// ChatWithSystem 带系统消息的聊天
+func (c *Client) ChatWithSystem(ctx context.Context, systemMessage, userMessage string, options ...chat.ChatOption) (*types.ChatCompletionResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.ChatWithSystem(ctx, systemMessage, userMessage, options...)
+}
+
+// ChatWithSystemStream 带系统消息的流式聊天
+func (c *Client) ChatWithSystemStream(ctx context.Context, systemMessage, userMessage string, options ...chat.ChatOption) (types.StreamResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.ChatWithSystemStream(ctx, systemMessage, userMessage, options...)
+}
+
+// ChatWithHistory 带历史记录的聊天
+func (c *Client) ChatWithHistory(ctx context.Context, userMessage string, history []types.ChatMessage, options ...chat.ChatOption) (*types.ChatCompletionResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.ChatWithHistory(ctx, userMessage, history, options...)
+}
+
+// ChatWithHistoryStream 带历史记录的流式聊天
+func (c *Client) ChatWithHistoryStream(ctx context.Context, userMessage string, history []types.ChatMessage, options ...chat.ChatOption) (types.StreamResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil, fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.ChatWithHistoryStream(ctx, userMessage, history, options...)
+}
+
+// ValidateMessage 验证消息
+func (c *Client) ValidateMessage(message types.ChatMessage) error {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.ValidateMessage(message)
+}
+
+// ValidateMessages 验证消息列表
+func (c *Client) ValidateMessages(messages []types.ChatMessage) error {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return fmt.Errorf("chat service not initialized")
+	}
+
+	return c.chatService.ValidateMessages(messages)
+}
+
+// BuildConversation 构建对话
+func (c *Client) BuildConversation(systemMessage string, userMessages []string) []types.ChatMessage {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return nil
+	}
+
+	return c.chatService.BuildConversation(systemMessage, userMessages)
+}
+
+// CountTokens 计算Token数量
+func (c *Client) CountTokens(messages []types.ChatMessage) int {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return 0
+	}
+
+	return c.chatService.CountTokens(messages)
+}
+
+// TruncateMessages 截断消息
+func (c *Client) TruncateMessages(messages []types.ChatMessage, maxTokens int) []types.ChatMessage {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.chatService == nil {
+		return messages
+	}
+
+	return c.chatService.TruncateMessages(messages, maxTokens)
 }

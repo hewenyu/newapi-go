@@ -119,7 +119,7 @@ func (hc *HTTPClient) DoStream(ctx context.Context, req *http.Request) (io.ReadC
 // Get 发送GET请求
 func (hc *HTTPClient) Get(ctx context.Context, path string, params url.Values) (*http.Response, error) {
 	fullPath := path
-	if params != nil && len(params) > 0 {
+	if params != nil {
 		fullPath = fmt.Sprintf("%s?%s", path, params.Encode())
 	}
 
