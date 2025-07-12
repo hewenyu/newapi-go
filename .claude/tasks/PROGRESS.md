@@ -5,6 +5,7 @@
 - **模块名称**: github.com/hewenyu/newapi-go
 - **项目目标**: 开发一个功能完整、高性能的 New-API Go SDK，支持聊天、嵌入、图像、音频四大核心功能模块
 - **编码规范**: 请参考 [docs/coding_standards.md](../../docs/coding_standards.md)
+- **new-api 文档**: 请参考 [docs/api/new-api.md](../../docs/api/new-api.md)
 
 ## 状态定义
 - **Pending**: 待处理。所有前置依赖已完成，但任务尚未开始。
@@ -18,7 +19,7 @@
 | :------- | :------------------------------------- | :---------- | :-------------- | :-------------------------------------------- | :------------------------------------------ |
 | TASK-001 | 初始化项目结构和基础配置               | Completed   | -               | [链接](./TASK-001_init_project.md)            | [链接](../../issues/TASK-001_init_project.md) |
 | TASK-002 | 实现核心客户端和配置管理               | Completed   | TASK-001        | [链接](./TASK-002_core_client.md)            | [链接](../../issues/TASK-002_core_client.md) |
-| TASK-003 | 实现类型定义和错误处理                 | Pending     | TASK-001        | [链接](./TASK-003_types_errors.md)           | -                                           |
+| TASK-003 | 实现类型定义和错误处理                 | Completed   | TASK-001        | [链接](./TASK-003_types_errors.md)           | [链接](../../issues/TASK-003_types_errors.md) |
 | TASK-004 | 实现HTTP传输层和日志系统               | Blocked     | TASK-002,TASK-003 | [链接](./TASK-004_http_logger.md)           | -                                           |
 | TASK-005 | 实现Chat服务（含流式）                 | Blocked     | TASK-004        | [链接](./TASK-005_chat_service.md)           | -                                           |
 | TASK-006 | 实现Embeddings服务                    | Blocked     | TASK-004        | [链接](./TASK-006_embeddings_service.md)     | -                                           |
@@ -45,9 +46,9 @@
 - 发布准备
 
 ## 当前状态总结
-- **待处理任务**: 1个
+- **待处理任务**: 0个
 - **进行中任务**: 0个
-- **已完成任务**: 2个
+- **已完成任务**: 3个
 - **阻塞任务**: 7个
 
-**下一步行动**: 可执行 TASK-003 (前置依赖已完成) 
+**下一步行动**: 可执行 TASK-004 (前置依赖已完成) 
