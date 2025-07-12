@@ -17,7 +17,8 @@ import (
 )
 
 const (
-	defaultModel = "gpt-4.1-mini"
+	defaultModel  = "glm-4-flash"
+	defaultModel2 = "gpt-4.1-mini"
 )
 
 // setupRealAPIClient 设置真实的API客户端
@@ -178,7 +179,7 @@ func TestRealAPIMultipleModels(t *testing.T) {
 
 	ctx := context.Background()
 
-	models := []string{defaultModel}
+	models := []string{defaultModel, defaultModel2}
 
 	for _, model := range models {
 		t.Run(model, func(t *testing.T) {
