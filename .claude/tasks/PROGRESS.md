@@ -4,7 +4,7 @@
 - **项目名称**: New-API Go SDK
 - **模块名称**: github.com/hewenyu/newapi-go
 - **项目目标**: 开发一个功能完整、高性能的 New-API Go SDK，支持聊天、嵌入、图像、音频四大核心功能模块
-- **编码规范**: 请参考 [docs/coding_standards.md](../docs/coding_standards.md)
+- **编码规范**: 请参考 [docs/coding_standards.md](../../docs/coding_standards.md)
 
 ## 状态定义
 - **Pending**: 待处理。所有前置依赖已完成，但任务尚未开始。
