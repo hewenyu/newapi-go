@@ -25,7 +25,7 @@
 | TASK-003 | 实现类型定义和错误处理                 | Completed   | TASK-001        | [链接](./TASK-003_types_errors.md)           | [链接](../../issues/TASK-003_types_errors.md) |
 | TASK-004 | 实现HTTP传输层和日志系统               | Completed   | TASK-002,TASK-003 | [链接](./TASK-004_http_logger.md)           | [链接](../../issues/TASK-004_http_logger.md) |
 | TASK-005 | 实现Chat服务（含流式）                 | Completed   | TASK-004        | [链接](./TASK-005_chat_service.md)           | [链接](../../issues/TASK-005_chat_service.md) |
-| TASK-006 | 实现Embeddings服务                    | In-Progress | TASK-004        | [链接](./TASK-006_embeddings_service.md)     | -                                           |
+| TASK-006 | 实现Embeddings服务                    | Completed   | TASK-004        | [链接](./TASK-006_embeddings_service.md)     | [链接](../../issues/TASK-006_embeddings_service.md) |
 | TASK-007 | 实现Image服务                         | Pending     | TASK-004        | [链接](./TASK-007_image_service.md)          | -                                           |
 | TASK-008 | 实现Audio服务                         | Pending     | TASK-004        | [链接](./TASK-008_audio_service.md)          | -                                           |
 | TASK-009 | 实现单元测试和集成测试                 | Blocked     | TASK-005,TASK-006,TASK-007,TASK-008 | [链接](./TASK-009_testing.md)              | -                                           |
@@ -49,9 +49,9 @@
 - 发布准备
 
 ## 当前状态总结
-- **待处理任务**: 3个
+- **待处理任务**: 2个
 - **进行中任务**: 0个
-- **已完成任务**: 5个
+- **已完成任务**: 6个
 - **阻塞任务**: 2个
 
-**下一步行动**: 正在执行 TASK-006 (Embeddings服务实现) 
+**下一步行动**: 执行 TASK-007 (Image服务实现) 或 TASK-008 (Audio服务实现) 

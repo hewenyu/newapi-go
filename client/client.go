@@ -10,6 +10,7 @@ import (
 	"github.com/hewenyu/newapi-go/internal/transport"
 	"github.com/hewenyu/newapi-go/internal/utils"
 	"github.com/hewenyu/newapi-go/services/chat"
+	"github.com/hewenyu/newapi-go/services/embeddings"
 	"github.com/hewenyu/newapi-go/types"
 )
 
@@ -25,6 +26,8 @@ type Client struct {
 	mu sync.RWMutex
 	// chatService 聊天服务
 	chatService *chat.ChatService
+	// embeddingService 嵌入服务
+	embeddingService *embeddings.EmbeddingService
 }
 
 // NewClient 创建一个新的客户端实例
@@ -53,6 +56,9 @@ func NewClient(options ...ClientOption) (*Client, error) {
 
 	// 初始化聊天服务
 	client.chatService = chat.NewChatService(client.transport, client.logger)
+
+	// 初始化嵌入服务
+	client.embeddingService = embeddings.NewEmbeddingService(client.transport, client.logger)
 
 	client.logger.Info("Client initialized successfully")
 
@@ -113,6 +119,9 @@ func (c *Client) UpdateConfig(cfg *config.Config) error {
 
 	// 重新初始化聊天服务
 	c.chatService = chat.NewChatService(c.transport, c.logger)
+
+	// 重新初始化嵌入服务
+	c.embeddingService = embeddings.NewEmbeddingService(c.transport, c.logger)
 
 	c.logger.Info("Client configuration updated successfully")
 
@@ -199,6 +208,11 @@ func (c *Client) SetLogger(logger utils.Logger) {
 	// 更新聊天服务的日志器
 	if c.chatService != nil {
 		c.chatService = chat.NewChatService(c.transport, c.logger)
+	}
+
+	// 更新嵌入服务的日志器
+	if c.embeddingService != nil {
+		c.embeddingService = embeddings.NewEmbeddingService(c.transport, c.logger)
 	}
 }
 
@@ -414,4 +428,98 @@ func (c *Client) TruncateMessages(messages []types.ChatMessage, maxTokens int) [
 	}
 
 	return c.chatService.TruncateMessages(messages, maxTokens)
+}
+
+// GetEmbeddingService 获取嵌入服务
+func (c *Client) GetEmbeddingService() *embeddings.EmbeddingService {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	return c.embeddingService
+}
+
+// ========== 嵌入服务代理方法 ==========
+
+// CreateEmbedding 创建单个文本的嵌入向量
+func (c *Client) CreateEmbedding(ctx context.Context, text string, options ...embeddings.EmbeddingOption) (*types.EmbeddingResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.embeddingService == nil {
+		return nil, fmt.Errorf("embedding service not initialized")
+	}
+
+	return c.embeddingService.CreateEmbedding(ctx, text, options...)
+}
+
+// CreateEmbeddings 创建批量文本的嵌入向量
+func (c *Client) CreateEmbeddings(ctx context.Context, texts []string, options ...embeddings.EmbeddingOption) (*types.EmbeddingResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.embeddingService == nil {
+		return nil, fmt.Errorf("embedding service not initialized")
+	}
+
+	return c.embeddingService.CreateEmbeddings(ctx, texts, options...)
+}
+
+// CreateEmbeddingFromTokens 从token创建嵌入向量
+func (c *Client) CreateEmbeddingFromTokens(ctx context.Context, tokens []int, options ...embeddings.EmbeddingOption) (*types.EmbeddingResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.embeddingService == nil {
+		return nil, fmt.Errorf("embedding service not initialized")
+	}
+
+	return c.embeddingService.CreateEmbeddingFromTokens(ctx, tokens, options...)
+}
+
+// ValidateEmbeddingInput 验证嵌入输入
+func (c *Client) ValidateEmbeddingInput(input interface{}) error {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.embeddingService == nil {
+		return fmt.Errorf("embedding service not initialized")
+	}
+
+	return c.embeddingService.ValidateInput(input)
+}
+
+// GetSupportedEmbeddingModels 获取支持的嵌入模型列表
+func (c *Client) GetSupportedEmbeddingModels() []string {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.embeddingService == nil {
+		return nil
+	}
+
+	return c.embeddingService.GetSupportedModels()
+}
+
+// GetEmbeddingMaxInputLength 获取嵌入模型的最大输入长度
+func (c *Client) GetEmbeddingMaxInputLength(model string) int {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.embeddingService == nil {
+		return 0
+	}
+
+	return c.embeddingService.GetMaxInputLength(model)
+}
+
+// GetEmbeddingDefaultDimensions 获取嵌入模型的默认维度
+func (c *Client) GetEmbeddingDefaultDimensions(model string) int {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.embeddingService == nil {
+		return 0
+	}
+
+	return c.embeddingService.GetDefaultDimensions(model)
 }
