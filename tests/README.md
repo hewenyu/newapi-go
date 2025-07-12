@@ -44,3 +44,10 @@ go test -v ./tests -run TestEmbeddingRealAPIContextCancellation
 ```
 
 
+## 音频测试
+
+```bash
+# 文本转语音测试
+go test -v ./tests -run TestRealAPIAudioTranscription
+```
+

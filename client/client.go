@@ -9,6 +9,7 @@ import (
 	"github.com/hewenyu/newapi-go/config"
 	"github.com/hewenyu/newapi-go/internal/transport"
 	"github.com/hewenyu/newapi-go/internal/utils"
+	"github.com/hewenyu/newapi-go/services/audio"
 	"github.com/hewenyu/newapi-go/services/chat"
 	"github.com/hewenyu/newapi-go/services/embeddings"
 	"github.com/hewenyu/newapi-go/types"
@@ -28,6 +29,8 @@ type Client struct {
 	chatService *chat.ChatService
 	// embeddingService 嵌入服务
 	embeddingService *embeddings.EmbeddingService
+	// audioService 音频服务
+	audioService *audio.AudioService
 }
 
 // NewClient 创建一个新的客户端实例
@@ -59,6 +62,9 @@ func NewClient(options ...ClientOption) (*Client, error) {
 
 	// 初始化嵌入服务
 	client.embeddingService = embeddings.NewEmbeddingService(client.transport, client.logger)
+
+	// 初始化音频服务
+	client.audioService = audio.NewAudioService(client.transport, client.logger)
 
 	client.logger.Info("Client initialized successfully")
 
@@ -122,6 +128,9 @@ func (c *Client) UpdateConfig(cfg *config.Config) error {
 
 	// 重新初始化嵌入服务
 	c.embeddingService = embeddings.NewEmbeddingService(c.transport, c.logger)
+
+	// 重新初始化音频服务
+	c.audioService = audio.NewAudioService(c.transport, c.logger)
 
 	c.logger.Info("Client configuration updated successfully")
 
@@ -522,4 +531,86 @@ func (c *Client) GetEmbeddingDefaultDimensions(model string) int {
 	}
 
 	return c.embeddingService.GetDefaultDimensions(model)
+}
+
+// ==================== Audio Service Methods ====================
+
+// GetAudioService 获取音频服务实例
+func (c *Client) GetAudioService() *audio.AudioService {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	return c.audioService
+}
+
+// CreateTranscription 创建音频转录
+func (c *Client) CreateTranscription(ctx context.Context, audioFile string, options ...audio.AudioOption) (*types.AudioTranscriptionResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.audioService == nil {
+		return nil, fmt.Errorf("audio service is not initialized")
+	}
+
+	return c.audioService.CreateTranscription(ctx, audioFile, options...)
+}
+
+// CreateTranslation 创建音频翻译
+func (c *Client) CreateTranslation(ctx context.Context, audioFile string, options ...audio.AudioOption) (*types.AudioTranslationResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.audioService == nil {
+		return nil, fmt.Errorf("audio service is not initialized")
+	}
+
+	return c.audioService.CreateTranslation(ctx, audioFile, options...)
+}
+
+// CreateSpeech 创建语音合成
+func (c *Client) CreateSpeech(ctx context.Context, text string, options ...audio.AudioOption) (*types.AudioSpeechResponse, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.audioService == nil {
+		return nil, fmt.Errorf("audio service is not initialized")
+	}
+
+	return c.audioService.CreateSpeech(ctx, text, options...)
+}
+
+// ValidateAudioFile 验证音频文件
+func (c *Client) ValidateAudioFile(filename string) error {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.audioService == nil {
+		return fmt.Errorf("audio service is not initialized")
+	}
+
+	return c.audioService.ValidateAudioFile(filename)
+}
+
+// GetSupportedAudioFormats 获取支持的音频格式
+func (c *Client) GetSupportedAudioFormats() []string {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.audioService == nil {
+		return []string{}
+	}
+
+	return c.audioService.GetSupportedFormats()
+}
+
+// GetMaxAudioFileSize 获取最大音频文件大小
+func (c *Client) GetMaxAudioFileSize() int64 {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if c.audioService == nil {
+		return 0
+	}
+
+	return c.audioService.GetMaxFileSize()
 }

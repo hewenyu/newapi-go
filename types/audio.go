@@ -18,8 +18,9 @@ const (
 
 // 音频转录模型常量
 const (
-	AudioModelWhisper1 = "whisper-1"
-	AudioModelWhisper2 = "whisper-2"
+	AudioModelWhisper1   = "whisper-1"
+	AudioModelWhisper2   = "whisper-2"
+	AudioModelSenseVoice = "FunAudioLLM/SenseVoiceSmall"
 )
 
 // 音频语音合成模型常量
@@ -493,6 +494,7 @@ func IsValidAudioModel(model string) bool {
 	validModels := []string{
 		AudioModelWhisper1,
 		AudioModelWhisper2,
+		AudioModelSenseVoice,
 	}
 
 	for _, validModel := range validModels {

@@ -31,6 +31,9 @@ type HTTPTransport interface {
 	// 流式方法
 	PostStream(ctx context.Context, path string, body interface{}) (StreamReader, error)
 
+	// 文件上传方法
+	PostMultipart(ctx context.Context, path, boundary string, body io.Reader) (*http.Response, error)
+
 	// 配置方法
 	SetTimeout(timeout time.Duration)
 	SetRetryPolicy(policy RetryPolicy)
@@ -174,6 +177,16 @@ func (hc *HTTPClient) PostStream(ctx context.Context, path string, body interfac
 	}
 
 	return NewJSONStreamReader(ctx, reader), nil
+}
+
+// PostMultipart 发送multipart POST请求
+func (hc *HTTPClient) PostMultipart(ctx context.Context, path, boundary string, body io.Reader) (*http.Response, error) {
+	req, err := hc.requestBuilder.BuildMultipartRequest(ctx, http.MethodPost, path, boundary, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return hc.Do(ctx, req)
 }
 
 // SetTimeout 设置超时时间
