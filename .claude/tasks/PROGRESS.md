@@ -16,9 +16,9 @@
 
 | 任务ID   | 任务描述                               | 状态        | 前置依赖        | 任务详情                                      | 完成报告                                    |
 | :------- | :------------------------------------- | :---------- | :-------------- | :-------------------------------------------- | :------------------------------------------ |
-| TASK-001 | 初始化项目结构和基础配置               | Pending     | -               | [链接](./TASK-001_init_project.md)            | -                                           |
-| TASK-002 | 实现核心客户端和配置管理               | Blocked     | TASK-001        | [链接](./TASK-002_core_client.md)            | -                                           |
-| TASK-003 | 实现类型定义和错误处理                 | Blocked     | TASK-001        | [链接](./TASK-003_types_errors.md)           | -                                           |
+| TASK-001 | 初始化项目结构和基础配置               | Completed   | -               | [链接](./TASK-001_init_project.md)            | [链接](../../issues/TASK-001_init_project.md) |
+| TASK-002 | 实现核心客户端和配置管理               | Pending     | TASK-001        | [链接](./TASK-002_core_client.md)            | -                                           |
+| TASK-003 | 实现类型定义和错误处理                 | Pending     | TASK-001        | [链接](./TASK-003_types_errors.md)           | -                                           |
 | TASK-004 | 实现HTTP传输层和日志系统               | Blocked     | TASK-002,TASK-003 | [链接](./TASK-004_http_logger.md)           | -                                           |
 | TASK-005 | 实现Chat服务（含流式）                 | Blocked     | TASK-004        | [链接](./TASK-005_chat_service.md)           | -                                           |
 | TASK-006 | 实现Embeddings服务                    | Blocked     | TASK-004        | [链接](./TASK-006_embeddings_service.md)     | -                                           |
@@ -45,9 +45,9 @@
 - 发布准备
 
 ## 当前状态总结
-- **待处理任务**: 10个
+- **待处理任务**: 2个
 - **进行中任务**: 0个
-- **已完成任务**: 0个
-- **阻塞任务**: 9个
+- **已完成任务**: 1个
+- **阻塞任务**: 7个
 
-**下一步行动**: 开始执行 TASK-001 初始化项目结构和基础配置 
+**下一步行动**: 可执行 TASK-002 或 TASK-003 (两个任务的前置依赖都已完成) 
