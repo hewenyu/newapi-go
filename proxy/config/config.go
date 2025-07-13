@@ -33,7 +33,7 @@ type Config struct {
 func LoadConfig() (*Config, error) {
 	config := &Config{
 		// 默认值
-		ServerPort:       8080,
+		ServerPort:       8082,
 		ServerHost:       "0.0.0.0",
 		LogLevel:         "INFO",
 		EnableDebug:      false,

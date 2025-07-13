@@ -25,24 +25,35 @@ func NewClaudeToNewAPIConverter() *ClaudeToNewAPIConverter {
 // getModelMapping 获取模型映射
 func getModelMapping() map[string]string {
 	return map[string]string{
-		// Claude 3 系列
-		"claude-3-opus-20240229":     "claude-3-opus-20240229",
-		"claude-3-sonnet-20240229":   "claude-3-sonnet-20240229",
-		"claude-3-haiku-20240307":    "claude-3-haiku-20240307",
-		"claude-3-5-sonnet-20241022": "claude-3-5-sonnet-20241022",
-		"claude-3-5-haiku-20241022":  "claude-3-5-haiku-20241022",
+		// Claude 3 系列 - 精确映射
+		"claude-3-opus-20240229":     "gemini-2.5-pro", // 大模型
+		"claude-3-sonnet-20240229":   "gemini-2.5-pro", // 大模型
+		"claude-3-haiku-20240307":    "gpt-4.1-mini",   // 小模型
+		"claude-3-5-sonnet-20241022": "gemini-2.5-pro", // 大模型
+		"claude-3-5-haiku-20241022":  "gpt-4.1-mini",   // 小模型
 
 		// 默认映射
-		"claude-3-opus":     "claude-3-opus-20240229",
-		"claude-3-sonnet":   "claude-3-sonnet-20240229",
-		"claude-3-haiku":    "claude-3-haiku-20240307",
-		"claude-3.5-sonnet": "claude-3-5-sonnet-20241022",
-		"claude-3.5-haiku":  "claude-3-5-haiku-20241022",
+		"claude-3-opus":     "gemini-2.5-pro", // 大模型
+		"claude-3-sonnet":   "gemini-2.5-pro", // 大模型
+		"claude-3-haiku":    "gpt-4.1-mini",   // 小模型
+		"claude-3.5-sonnet": "gemini-2.5-pro", // 大模型
+		"claude-3.5-haiku":  "gpt-4.1-mini",   // 小模型
 
 		// 简化映射
-		"opus":   "claude-3-opus-20240229",
-		"sonnet": "claude-3-sonnet-20240229",
-		"haiku":  "claude-3-haiku-20240307",
+		"opus":   "gemini-2.5-pro", // 大模型
+		"sonnet": "gemini-2.5-pro", // 大模型
+		"haiku":  "gpt-4.1-mini",   // 小模型
+
+		// 通用映射
+		"claude-opus":   "gemini-2.5-pro", // 大模型
+		"claude-sonnet": "gemini-2.5-pro", // 大模型
+		"claude-haiku":  "gpt-4.1-mini",   // 小模型
+
+		// 默认大小模型
+		"large": "gemini-2.5-pro", // 大模型
+		"small": "gpt-4.1-mini",   // 小模型
+		"big":   "gemini-2.5-pro", // 大模型
+		"mini":  "gpt-4.1-mini",   // 小模型
 	}
 }
 
