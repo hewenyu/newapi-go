@@ -19,6 +19,7 @@ import (
 const (
 	defaultModel  = "glm-4-flash"
 	defaultModel2 = "gpt-4.1-mini"
+	gemini25pro   = "gemini-2.5-pro"
 )
 
 // setupRealAPIClient 设置真实的API客户端
@@ -51,7 +52,7 @@ func TestRealAPISimpleChat(t *testing.T) {
 	ctx := context.Background()
 
 	response, err := c.SimpleChat(ctx, "Hello, please say 'Hi' back to me.",
-		chat.WithModel(defaultModel),
+		chat.WithModel(gemini25pro),
 		chat.WithMaxTokens(50),
 		chat.WithTemperature(0.7),
 	)
@@ -138,8 +139,8 @@ func TestRealAPIStreamChat(t *testing.T) {
 
 	stream, err := c.SimpleChatStream(ctx,
 		"Count from 1 to 5, each number on a new line.",
-		chat.WithModel(defaultModel),
-		chat.WithMaxTokens(100),
+		chat.WithModel(gemini25pro),
+		chat.WithMaxTokens(500),
 		chat.WithTemperature(0.5),
 	)
 
@@ -162,6 +163,7 @@ func TestRealAPIStreamChat(t *testing.T) {
 		}
 
 		if event.Type == types.StreamEventTypeData {
+			fullContent += string(event.Data)
 			eventCount++
 			t.Logf("Event %d: %s", eventCount, string(event.Data))
 		}
