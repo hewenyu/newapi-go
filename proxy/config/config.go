@@ -35,8 +35,8 @@ func LoadConfig() (*Config, error) {
 		// 默认值
 		ServerPort:       8082,
 		ServerHost:       "0.0.0.0",
-		LogLevel:         "INFO",
-		EnableDebug:      false,
+		LogLevel:         "DEBUG",
+		EnableDebug:      true,
 		RequestTimeout:   30 * time.Second,
 		MaxRequestSize:   10 * 1024 * 1024, // 10MB
 		MaxConcurrent:    100,
